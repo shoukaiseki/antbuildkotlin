@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="testkotlin" default="buildkotlin" basedir=".">
+	<typedef resource="org/jetbrains/kotlin/ant/antlib.xml" classpath="kotlinlib/kotlin-ant.jar"/>
+
+	<!-- Sets variables which can later be used. -->
+	<!-- The value of a property is accessed via ${} -->
+	<property name="jar.path" location="lib" />
+	<property name="j2ee.path" location="lib" />
+	<property name="src.dir" location="src" />
+	<property name="testwebsrc_dir" location="testwebsrc" />
+	
+	<property name="resources.dir" location="resources" />
+	
+	<property name="build.dir" location="classes" />
+	<!--
+	<property name="maximo_mbo_classes.dir" location="/media/develop/bea10_3/crp/linkmaximo/businessobjects/classes" />
+	-->
+
+	<!-- 定义classpath -->
+	<path id="libs">
+		<pathelement location="lib/*.jar" />
+	</path>
+
+
+
+	<!-- Deletes the existing build, docs and dist directory-->
+	<target name="clean">
+		<delete dir="${build.dir}" />
+	</target>
+
+	<!-- Creates the  build, docs and dist directory-->
+	<target name="makedir">
+		<mkdir dir="${build.dir}" />
+	</target>
+
+	<!-- Compiles the java code (including the usage of library for JUnit -->
+	<target name="compile" depends="clean, makedir">
+		<javac target="1.7" srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="true" debug="true">
+			<!--给编译器指定编码，防止出现："警告： 编码 GBK 的不可映射字符"-->
+			<compilerarg line="-encoding UTF-8 "/>
+			<classpath> 
+				<pathelement path="${build.dir}"/> 
+				<fileset dir="${jar.path}">
+					<include name="**/*.jar"/> 
+				</fileset> 
+				<fileset dir="${j2ee.path}">
+				</fileset> 
+			</classpath> 
+		</javac>
+		<javac target="1.7" srcdir="${testwebsrc_dir}" destdir="${build.dir}" includeantruntime="true" debug="true">
+			<!--给编译器指定编码，防止出现："警告： 编码 GBK 的不可映射字符"-->
+			<compilerarg line="-encoding UTF-8 "/>
+			<classpath> 
+				<pathelement path="${build.dir}"/> 
+				<fileset dir="${jar.path}">
+					<include name="**/*.jar"/> 
+				</fileset> 
+				<fileset dir="${j2ee.path}">
+				</fileset> 
+			</classpath> 
+		</javac>
+		<copy todir="${build.dir}">
+			<fileset dir="${src.dir}">
+				<include name="**/*.properties" />
+				<include name="**/*.xml" />
+			</fileset>
+		</copy>
+
+		<copy todir="${build.dir}">
+			<fileset dir="${resources.dir}">
+				<include name="**/*.properties" />
+				<include name="**/*.xml" />
+			</fileset>
+		</copy>
+	</target>
+
+
+	<target name="buildkotlin" depends="clean, makedir">
+		<delete dir="classes" failonerror="false"/>
+		<mkdir dir="classes"/>
+		<javac destdir="classes" includeAntRuntime="false" srcdir="src">
+			<compilerarg line="-encoding UTF-8 "/>
+				<classpath> 
+					<pathelement path="${build.dir}"/> 
+					<fileset dir="kotlinlib/">
+						<include name="**/*.jar"/> 
+					</fileset> 
+					<fileset dir="${jar.path}">
+						<include name="**/*.jar"/> 
+					</fileset> 
+					<fileset dir="${j2ee.path}">
+					</fileset> 
+				</classpath> 
+			<withKotlin>
+			</withKotlin>
+		</javac>
+		<javac destdir="classes" includeAntRuntime="false" srcdir="kotlinsrc">
+			<compilerarg line="-encoding UTF-8 "/>
+				<classpath> 
+					<pathelement path="${build.dir}"/> 
+					<fileset dir="kotlinlib/">
+						<include name="**/*.jar"/> 
+					</fileset> 
+					<fileset dir="${jar.path}">
+						<include name="**/*.jar"/> 
+					</fileset> 
+					<fileset dir="${j2ee.path}">
+					</fileset> 
+				</classpath> 
+			<withKotlin>
+			</withKotlin>
+		</javac>
+	</target>
+
+	<target name="runtest" depends="buildkotlin">
+
+		<java classname="com.HelloKt" 
+				dir="${build.dir}">
+		  <arg value="asus"/>
+		  <classpath>
+			<pathelement path="${build.dir}"/> 
+			  <fileset dir="kotlinlib/">
+				  <include name="**/*.jar"/> 
+			  </fileset> 
+			  <fileset dir="${jar.path}">
+				  <include name="**/*.jar"/> 
+			  </fileset> 
+			  <fileset dir="${j2ee.path}">
+			  </fileset> 
+		  </classpath>
+		</java>
+	</target>
+
+
+
+	<!-- 清除WebRoot/WEB-INF/classes目录,用于SVN上传 {{{1 -->
+	<target name="cleanClasses">
+		<delete dir="${build.dir}" />
+	</target>
+
+</project>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
