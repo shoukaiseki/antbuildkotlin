@@ -1,7 +1,6 @@
 @ECHO OFF
 set "KOTLINCLASSPATH=classes;bin"
-
-@REM for è¿‡ç¨‹ä¸­ä¼šè‡ªåŠ¨æ·»åŠ  setlocal ,æ‰€ä»¥è®¾ç½® å˜é‡æ—¶ä½¿ç”¨ call ä¼ é€’
+@REM for ¹ý³ÌÖÐ»á×Ô¶¯Ìí¼Ó setlocal ,ËùÒÔÉèÖÃ ±äÁ¿Ê±Ê¹ÓÃ call ´«µÝ
 for %%F in (lib\*.jar) do (
 	call :addcp %%i
 )
