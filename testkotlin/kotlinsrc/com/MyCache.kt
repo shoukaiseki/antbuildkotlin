@@ -21,6 +21,7 @@ open class MyCache {
 		 @JvmStatic
         fun main(args: Array<String>) {
 			println("i am kotlin")
+			
         }
 	}
 }
