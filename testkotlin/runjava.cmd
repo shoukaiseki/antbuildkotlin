@@ -2,7 +2,7 @@
 set "KOTLINCLASSPATH=classes;bin"
 @REM for 过程中会自动添加 setlocal ,所以设置 变量时使用 call 传递
 for %%F in (lib\*.jar) do (
-	call :addcp %%i
+	call :addcp %%F
 )
 
 
