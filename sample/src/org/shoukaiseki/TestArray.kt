@@ -21,6 +21,7 @@ object TestArray {
                 TreeMenu("4c", "23", "sfd")
         )
 
+        //kotlin ArrayList 转换 为任意数组
         tm.addChildren(*getChildren1().toTypedArray())
         tm.addChildren(*getChildren2().toTypedArray())
         tm.addChildren(*tms)
