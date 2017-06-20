@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="kotlinsample" default="buildkotlin" basedir=".">
+	<typedef resource="org/jetbrains/kotlin/ant/antlib.xml" classpath="../testkotlin/kotlinlib/kotlin-ant.jar"/>
+
+	<!-- Sets variables which can later be used. -->
+	<!-- The value of a property is accessed via ${} -->
+	<property name="jar_path" location="lib" />
+	<property name="j2ee_path" location="lib" />
+	<property name="kotlinlib_path" location="../testkotlin/kotlinlib" />
+	
+	<property name="src_dir" location="src" />
+	<property name="testwebsrc_dir" location="testwebsrc" />
+	
+	<property name="resources_dir" location="resources" />
+	
+	<property name="build_dir" location="bin" />
+	<!--
+	<property name="maximo_mbo_classes.dir" location="/media/develop/bea10_3/crp/linkmaximo/businessobjects/classes" />
+	-->
+
+	<!-- 定义classpath -->
+	<path id="libs">
+		<pathelement location="lib/*.jar" />
+	</path>
+
+
+
+	<!-- Deletes the existing build, docs and dist directory-->
+	<target name="clean">
+		<delete dir="${build_dir}" />
+	</target>
+
+	<!-- Creates the  build, docs and dist directory-->
+	<target name="makedir">
+		<mkdir dir="${build_dir}" />
+	</target>
+
+	<!-- Compiles the java code (including the usage of library for JUnit -->
+	<target name="compile" depends="clean, makedir">
+		<javac target="1.7" srcdir="${src_dir}" destdir="${build_dir}" includeantruntime="true" debug="true">
+			<!--给编译器指定编码，防止出现："警告： 编码 GBK 的不可映射字符"-->
+			<compilerarg line="-encoding UTF-8 "/>
+			<classpath> 
+				<pathelement path="${build_dir}"/> 
+				<fileset dir="${jar_path}">
+					<include name="**/*.jar"/> 
+				</fileset> 
+				<fileset dir="${j2ee_path}">
+				</fileset> 
+			</classpath> 
+		</javac>
+		<javac target="1.7" srcdir="${testwebsrc_dir}" destdir="${build_dir}" includeantruntime="true" debug="true">
+			<!--给编译器指定编码，防止出现："警告： 编码 GBK 的不可映射字符"-->
+			<compilerarg line="-encoding UTF-8 "/>
+			<classpath> 
+				<pathelement path="${build_dir}"/> 
+				<fileset dir="${jar_path}">
+					<include name="**/*.jar"/> 
+				</fileset> 
+				<fileset dir="${j2ee_path}">
+				</fileset> 
+			</classpath> 
+		</javac>
+		<copy todir="${build_dir}">
+			<fileset dir="${src_dir}">
+				<include name="**/*.properties" />
+				<include name="**/*.xml" />
+			</fileset>
+		</copy>
+
+		<copy todir="${build_dir}">
+			<fileset dir="${resources_dir}">
+				<include name="**/*.properties" />
+				<include name="**/*.xml" />
+			</fileset>
+		</copy>
+	</target>
+
+
+	<target name="buildkotlin" depends="clean, makedir">
+		<delete dir="${build_dir}" failonerror="false"/>
+		<mkdir dir="${build_dir}"/>
+		<javac destdir="${build_dir}" includeAntRuntime="false" srcdir="src">
+			<compilerarg line="-encoding UTF-8 "/>
+				<classpath> 
+					<pathelement path="${build_dir}"/> 
+					<fileset dir="${kotlinlib_path}">
+						<include name="**/*.jar"/> 
+					</fileset> 
+					<fileset dir="${jar_path}">
+						<include name="**/*.jar"/> 
+					</fileset> 
+					<fileset dir="${j2ee_path}">
+					</fileset> 
+				</classpath> 
+			<withKotlin>
+			</withKotlin>
+		</javac>
+	</target>
+
+	<target name="runtest" depends="buildkotlin">
+
+		<java classname="org.shoukaiseki.TestArray" 
+				dir="${build_dir}">
+		  <arg value="asus"/>
+		  <classpath>
+			<pathelement path="${build_dir}"/> 
+			  <fileset dir="${kotlinlib_path}">
+				  <include name="**/*.jar"/> 
+			  </fileset> 
+			  <fileset dir="${jar_path}">
+				  <include name="**/*.jar"/> 
+			  </fileset> 
+			  <fileset dir="${j2ee_path}">
+			  </fileset> 
+		  </classpath>
+		</java>
+	</target>
+
+
+
+	<!-- 清除WebRoot/WEB-INF/classes目录,用于SVN上传 {{{1 -->
+	<target name="cleanClasses">
+		<delete dir="${build_dir}" />
+	</target>
+
+</project>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
