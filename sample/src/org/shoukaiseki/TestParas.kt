@@ -19,6 +19,14 @@ class TestParas(var name:String="asus",var age:Int=10){
         this.name=name
     }
 
+    /**
+     * 新版本kotlin需要加 @JvmOverloads 才能使用setParaTest2(name)
+     */
+    @JvmOverloads
+    fun setParaTest2(name:String,displayname:String="姓名"){
+        println("name=$name,displayname=$displayname")
+    }
+
      fun println() {
         println("name=$name,age=$age")
     }
@@ -37,5 +45,8 @@ fun main(args: Array<String>) {
 
     tp.setParaClass()
     tp.setParaClass(StringBuffer::class.java)
+
+    tp.setParaTest2("linux")
+    tp.setParaTest2("linux","理你哭死")
 
 }

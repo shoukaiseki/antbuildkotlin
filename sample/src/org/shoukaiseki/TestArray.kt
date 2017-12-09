@@ -1,5 +1,6 @@
 package org.shoukaiseki;
 
+import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONObject
 import org.shoukaiseki.TreeMenu
 
@@ -21,6 +22,7 @@ object TestArray {
                 TreeMenu("4c", "23", "sfd")
         )
 
+
         //kotlin ArrayList 转换 为任意数组
         tm.addChildren(*getChildren1().toTypedArray())
         tm.addChildren(*getChildren2().toTypedArray())
@@ -30,6 +32,13 @@ object TestArray {
         for (tt in tm.children){
             println(JSONObject.toJSONString(tt))
         }
+
+        var ar:Any
+        ar= arrayOf<Any>("asus","linux")
+        ar= arrayListOf<Any>()
+        ar.plus("AA")
+        println("ar=${JSON.toJSONString(ar)}")
+        println("classname=${ar.javaClass.name}")
     }
 
     internal fun getChildren2(): ArrayList<TreeMenu> {
@@ -49,5 +58,7 @@ object TestArray {
         als.add(TreeMenu("4a", "2", "asus"))
         return als
     }
+
+
 
 }
